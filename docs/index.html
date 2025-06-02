@@ -65,6 +65,39 @@
         }
       ]
     }
+
+    window.$docsify.plugins = [].concat(
+      window.$docsify.plugins || [],
+      function (hook, vm) {
+
+        hook.doneEach(function () {
+          console.log('All content processed for accessibility enhancements');
+          const hash = document.location.hash.replace('#/', '');
+          const scriptSource = `js/pages/${hash}.js`;
+
+          // Remove any previously added page script
+          const oldScript = document.getElementById('page-script');
+          if (oldScript) oldScript.remove();
+
+          // Check if the JS file exists before adding
+          fetch(scriptSource, { method: 'HEAD' })
+            .then(response => {
+              if (response.ok) {
+                const pageScript = document.createElement('script');
+                pageScript.id = 'page-script';
+                pageScript.setAttribute('src', scriptSource);
+                pageScript.defer = true;
+                document.body.appendChild(pageScript);
+              } else {
+                console.warn('Page script not found:', scriptSource);
+              }
+            })
+            .catch(error => {
+              console.error('Error checking page script:', error);
+            });
+        });
+      }
+    );
   </script>
   <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
   <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
