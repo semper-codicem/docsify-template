@@ -2,3 +2,5 @@
 - [Getting Started](getting-started.md)
 - [API Reference](api-reference.md)
 - [Accessibility](accessibility.md)
+- [multiple sidebars](multiple-sidebar.md)
+- [Use CSS](use-css.md)
